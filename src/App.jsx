@@ -5,11 +5,10 @@ import { Trash } from "lucide-react";
 import { CheckCircle } from "lucide-react";
 
 function App() {
-  const iconSize =16
+  const iconSize = 16;
   const [formData, setFormData] = useState({
     title: "",
     desc: "",
-    isComplete: false,
   });
 
   const [taskList, setTaskList] = useState([]);
@@ -22,23 +21,32 @@ function App() {
   }
 
   function add(task) {
-    const newTask = { ...task, id: uuidv4() };
+    const trimmedTitle = task.title.trim();
+    if (!trimmedTitle) {
+      return;
+    }
+
+    const newTask = {
+      id: uuidv4(),
+      title: trimmedTitle,
+      desc: task.desc.trim(),
+      isComplete: false,
+    };
+
     setTaskList((previous) => [...previous, newTask]);
     setFormData({ title: "", desc: "" });
   }
 
   function deleteTask(id) {
-    const newList = taskList.filter((t) => t.id !== id);
-    setTaskList(newList);
+    setTaskList((previous) => previous.filter((t) => t.id !== id));
   }
 
   function complete(id) {
-        const task = taskList.find((t) => t.id === id);
-    if (task) {
-      const updatedTask = { ...task, isComplete: !task.isComplete };
-      const newList = taskList.map((t) => (t.id === id ? updatedTask : t));
-      setTaskList(newList);
-    }
+    setTaskList((previous) =>
+      previous.map((t) =>
+        t.id === id ? { ...t, isComplete: !t.isComplete } : t
+      )
+    );
   }
 
   return (
@@ -66,20 +74,22 @@ function App() {
       <div>
         <h2>To do</h2>
         <ul>
-          {taskList.map((task, index) => (
-            <li key={index}>
-              <p>{task.title}</p>
-              <p>{task.desc}</p>
-              <button onClick={() => deleteTask(task.id)}>
-                <Trash color="red" size={iconSize} />
-                Delete
-              </button>
-              <button onClick={() => complete(task.id)}>
-                <CheckCircle color="green" size={iconSize} />
-                Complete
-              </button>
-            </li>
-          ))}
+          {taskList
+            .filter((task) => !task.isComplete)
+            .map((task) => (
+              <li key={task.id}>
+                <p>{task.title}</p>
+                <p>{task.desc}</p>
+                <button onClick={() => deleteTask(task.id)}>
+                  <Trash color="red" size={iconSize} />
+                  Delete
+                </button>
+                <button onClick={() => complete(task.id)}>
+                  <CheckCircle color="green" size={iconSize} />
+                  Complete
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
 
@@ -88,8 +98,8 @@ function App() {
         <ul>
           {taskList
             .filter((task) => task.isComplete)
-            .map((task, index) => (
-              <li key={index}>
+            .map((task) => (
+              <li key={task.id}>
                 <p>{task.title}</p>
                 <p>{task.desc}</p>
                 <button onClick={() => deleteTask(task.id)}>
@@ -102,6 +112,6 @@ function App() {
       </div>
     </>
   );
-
 }
+
 export default App;

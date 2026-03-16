@@ -1,24 +1,60 @@
+# Node/Vite project defaults
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Runtime/temporary files
+*.pid
+*.seed
+*.pid.lock
+
+# IDE files
+.vscode/
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Optional
+*.tgz
+
+# Yarn v3 (si utilisé)
+.pnp.*
+.yarn/
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Specific outdirs (frameworks statiques pas utilisés ici)
+.next/
+.nuxt/
+.public/
+
+# Vite specific cache/log
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
